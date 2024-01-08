@@ -13,8 +13,15 @@
     </select>
 
     <label>Skills</label>
-    <input type="text" v-model="tempSkill" />
-
+    <input
+      type="text"
+      v-model="tempSkill"
+      @keyup="addSkill"
+      value="tempSkill"
+    />
+    <div v-for="skill in skills" :key="skill" class="skill">
+      {{ skill }}
+    </div>
     <div class="terms">
       <input type="checkbox" required v-model="terms" />
       <label>Accept terms & conditions</label>
@@ -25,7 +32,6 @@
     <p>Password: {{ password }}</p>
     <p>Role: {{ role }}</p>
     <p>Terms accepted: {{ terms }}</p>
-    <p>Names: {{ names }}</p>
   </div>
 </template>
 <script>
@@ -39,6 +45,16 @@ export default {
       skills: [],
       tempSkill: "",
     };
+  },
+  methods: {
+    addSkill(e) {
+      if (e.key === "," && this.tempSkill) {
+        if (!this.skills.includes(this.tempSkill)) {
+          this.skills.push(this.tempSkill);
+        }
+        this.tempSkill = "";
+      }
+    },
   },
 };
 </script>
