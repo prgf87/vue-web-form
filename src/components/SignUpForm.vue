@@ -1,10 +1,13 @@
 <template>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <label>Email: </label>
-    <input type="email" required v-model="email" />
+    <input type="email" v-model="email" />
 
     <label>Password: </label>
-    <input type="password" required v-model="password" />
+    <input type="password" v-model="password" />
+    <div v-if="passwordError" class="p-error">
+      {{ passwordError }}
+    </div>
 
     <label>Role: </label>
     <select v-model="role">
@@ -25,8 +28,11 @@
       </span>
     </div>
     <div class="terms">
-      <input type="checkbox" required v-model="terms" />
+      <input type="checkbox" v-model="terms" />
       <label>Accept terms & conditions</label>
+    </div>
+    <div class="submit">
+      <button>Create Account</button>
     </div>
   </form>
   <div class="container">
@@ -46,6 +52,7 @@ export default {
       terms: false,
       skills: [],
       tempSkill: "",
+      passwordError: "",
     };
   },
   methods: {
@@ -62,6 +69,21 @@ export default {
       this.skills = this.skills.filter((item) => {
         return skill !== item;
       });
+    },
+    handleSubmit() {
+      this.passwordError =
+        this.password.length > 5
+          ? ""
+          : "Password must be at least 6 characters long";
+      if (!this.passwordError) {
+        console.log(
+          this.email,
+          this.password,
+          this.role,
+          this.skills,
+          this.terms
+        );
+      }
     },
   },
 };
@@ -91,7 +113,9 @@ select {
   width: 100%;
   box-sizing: border-box;
   border: none;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
   color: #555;
 }
 input[type="checkbox"] {
@@ -117,5 +141,26 @@ input[type="checkbox"] {
   font-weight: bold;
   color: #777;
   cursor: pointer;
+}
+button {
+  background: #888;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin: 30px 0 auto;
+  font-weight: 750;
+}
+.submit {
+  text-align: center;
+}
+.p-error {
+  color: red;
+  font-size: 12px;
+  margin: 10px 0;
+  font-weight: bold;
 }
 </style>
